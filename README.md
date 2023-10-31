@@ -10,7 +10,7 @@ Python-программой, выполняюейся на стороне сер
 [2] - Создание изолированой среды
 * При работе в Linux
 ```bash
-    $ python -m venv az_env
+    $ python3 -m venv az_env
     $ source az_env/bin/activate
 ```
 * При работе в Windows
@@ -26,8 +26,13 @@ Python-программой, выполняюейся на стороне сер
 ```
 
 [4] - Запуск первого приложения
+* При работе в Linux
 ```bash
-    (az_env)$ python3 flask_wsgi/flask_wsgi_1.py
+    (az_env)$ python3 flask_wsgi_x/flask_wsgi_1.py
+```
+* При работе в Windows
+```bash
+    (az_env)$ py flask_wsgi_w/flask_wsgi_1.py
 ```
 
 [5] - Деактивация изолированой среды

@@ -1,4 +1,4 @@
 *.env
 **/__pycache__
-/az_env
+**/az_env
 db.sqite3
