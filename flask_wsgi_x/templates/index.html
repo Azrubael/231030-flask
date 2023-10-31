@@ -1,23 +1,6 @@
-<!DOCTYPE html>
-<html>
-<head>
-    {% if title %}
-        <title>{{ title }}</title>
-    {% else %}
-        <title>About Flask</title>
-    {% endif %}
-</head>
-<body>
-    <ul>
-        {% for m in menu %}
-        <li>{{ m }}</li>
-        {% endfor %}
-    </ul>
+{% extends 'base.html' %}
 
-    {% if title %}
-        <h3>About Flask - {{ title }}</h3>
-    {% else %}
-        <h3>About Flask</h3>
-    {% endif %}
-</body>
-</html>
+{% block content %}
+{{ super() }}
+<p>Main Page content
+{% endblock %}
