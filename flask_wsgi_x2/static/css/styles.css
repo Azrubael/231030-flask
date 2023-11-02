@@ -61,6 +61,6 @@ div.content {
 
 p {
 	color: #23241e;
-	position: absolute;
+	position: relative;
 	left: 10px;
 }
