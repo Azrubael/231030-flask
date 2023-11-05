@@ -20,19 +20,28 @@ Python-программой, выполняюейся на стороне сер
 ```
 
 
-[3] - Установка фреймворка Flask
+[3] - Установка фреймворка Flask и модуля для работы с кастодиальными переменными окружения
 ```bash
     (az_env)$ pip install Flask
+    (az_env)$ pip install 'python-decouple==3.8'
+# only for development purpose
+    (az_env)$ pip install findpydeps
+    (az_env)$ findpydeps -i path/to/folder > dependencies.txt
+    
+```
+OR
+```bash
+    (az_env)$ pip install -r requirements.txt
 ```
 
 [4] - Запуск первого приложения
 * При работе в Linux
 ```bash
-    (az_env)$ python3 flask_wsgi_x/flask_wsgi_1.py
+    (az_env)$ python3 flask_wsgi_x/flask_wsgi*.py
 ```
 * При работе в Windows
 ```bash
-    (az_env)$ py flask_wsgi_w/flask_wsgi_1.py
+    (az_env)$ py flask_wsgi_w/flask_wsgi*.py
 ```
 
 [5] - Деактивация изолированой среды
