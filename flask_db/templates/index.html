@@ -3,20 +3,20 @@
 {% block content %}
 {{ super() }}
 <hr>
-<!-- <p>Main Page content -->
-<h2>List of articles</h2>
+<h3><p>List of articles</p></h3>
 <ul class="list-posts">
     {% for p in posts %}
-        <li>
-            <p class="title">
-                <a href="{{ url_for('showPost', id_post=p.id) }}">
-                    {{ p.title }}
-                </a>
-            </p>
-            <p class="annonce">
-                {{ p.text[:50] }}
-            </p>
-        </li>
+    <li>
+        <p class="title">
+            <a href="{{ url_for('show_post', id_post=p.id) }}">
+                {{ p.title }}
+            </a>
+        </p>
+        <p class="annonce">
+            {{ p.text[:50] }}
+        </p>
+    </li>
     {% endfor %}
 </ul>
+<p>Main Page content</p>
 {% endblock %}

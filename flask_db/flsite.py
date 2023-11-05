@@ -1,6 +1,7 @@
 import os
 import sqlite3
-from flask import Flask, render_template, request, g, flash
+from flask import Flask, render_template, flash, abort, redirect, url_for, \
+                session, request, g
 from decouple import config
 from FDataBase import FDataBase
 
@@ -11,9 +12,13 @@ SECRET_KEY = config('SECRET_KEY')
 
 app = Flask(__name__)
 app.config.from_object(__name__)
-
 app.config.update(dict(DATABASE=os.path.join(app.root_path, 'flsite.db')))
 
+menu = [{"title": "Main", "url": "/"},
+        {"title": "Add post", "url": "add_post"},
+        {"title": "About", "url": "about"},
+        {"title": "Feedback", "url": "feedback"},
+        {"title": "Login", "url": "login"}]
 
 def connect_db():
     """Establishing a connection to the database."""
@@ -44,7 +49,7 @@ def get_db():
 def index():
     db = get_db()
     dbase = FDataBase(db)
-    return render_template('index.html', menu=dbase.getMenu())
+    return render_template('index.html', menu=menu, posts=dbase.getPostsAnonce())
 
 
 @app.route('/add_post', methods=['POST', 'GET'])
@@ -66,6 +71,49 @@ def add_post():
             title='Adding article')
 
 
+@app.route("/post/<int:id_post>")
+def show_post(id_post):
+    db = get_db()
+    dbase = FDataBase(db)
+    title, post = dbase.getPost(id_post)
+    if not title:
+        abort(404)
+
+    return render_template('post.html', menu=dbase.getMenu(), \
+                            title=title, post=post)
+
+
+@app.route('/about')
+def about():
+    return render_template('about.html', title='The About Page', menu=menu)
+
+
+@app.route('/feedback', methods=['POST', 'GET'])
+def feedback():
+    if request.method == 'POST':
+        print(request.form)
+        print(f"Message: {request.form['message']}")
+        if len(request.form['username']) > 2:
+            flash('-= Message sent =-', category='success')
+        else:
+            flash('-= Sending error =-', category='error')
+        
+    return render_template('feedback.html', title='Feedback', menu=menu)
+
+
+@app.route('/login', methods=['POST', 'GET'])
+def login():
+    if 'userLogged' in session:
+        return redirect(url_for('profile', username=session['userLogged']))
+    elif request.method == 'POST' and \
+        request.form['username'] == "admin" and \
+        request.form['psw'] == "123":
+        session['userLogged'] = request.form['username']
+        return redirect(url_for('profile', username=session['userLogged']))
+
+    return render_template('login.html', title='Authorization', menu=menu)
+
+
 @app.teardown_appcontext
 def close_db(error):
     """Closes connection with a DBMS if it has been established."""
@@ -76,4 +124,4 @@ def close_db(error):
 if __name__ == "__main__":
     app.run(debug=True)
 
-# timecode 09:00
+# не работает ссылка Feedback, следует создать соответствующую таблицу в базе данных по типу "добавить статью"
