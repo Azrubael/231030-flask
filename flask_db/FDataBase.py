@@ -22,11 +22,17 @@ class FDataBase:
         return []
     
 
-    def addPost(self, title, text):
+    def addPost(self, title, text, url):
         try:
+            self.__cur.execute( f"SELECT COUNT() as 'count' FROM posts WHERE url LIKE '{url}'" )
+            res = self.__cur.fetchone()
+            if res['count'] > 0:
+                print("The article with this URL already exists.")
+                return False
+
             tm = math.floor(time.time())
-            self.__cur.execute("INSERT INTO posts VALUES(NULL, ?, ?, ?)", \
-                               (title, text, tm))
+            self.__cur.execute("INSERT INTO posts VALUES(NULL, ?, ?, ?, ?)", \
+                               (title, text, url, tm))
             self.__db.commit()
         except sqlite3.Error as e:
             print("Error adding article to DataBase " + str(e))
@@ -35,9 +41,9 @@ class FDataBase:
         return True
     
 
-    def getPost(self, postId):
+    def getPost(self, alias):
         try:
-            self.__cur.execute(f"SELECT title, text FROM posts WHERE id = {postId} LIMIT 1")
+            self.__cur.execute(f"SELECT title, text FROM posts WHERE url LIKE '{alias}' LIMIT 1")
             res = self.__cur.fetchone()
             if res:
                 return res
@@ -49,7 +55,7 @@ class FDataBase:
 
     def getPostsAnonce(self):
         try:
-            self.__cur.execute(f"SELECT id, title, text FROM posts ORDER BY time DESC")
+            self.__cur.execute(f"SELECT id, title, text, url FROM posts ORDER BY time DESC")
             res = self.__cur.fetchall()
             if res:
                 return res

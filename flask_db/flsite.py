@@ -54,7 +54,7 @@ def add_post():
 
     if request.method == 'POST':
         if len(request.form['name']) > 4 and len(request.form['post'])  > 10:
-            res = dbase.addPost(request.form['name'], request.form['post'])
+            res = dbase.addPost(request.form['name'], request.form['post'],  request.form['url'])
             if not res:
                 flash('Error adding article', category='error')
             else:
@@ -66,11 +66,11 @@ def add_post():
             title='Adding article')
 
 
-@app.route("/post/<int:id_post>")
-def show_post(id_post):
+@app.route("/post/<alias>")
+def show_post(alias):
     db = get_db()
     dbase = FDataBase(db)
-    title, post = dbase.getPost(id_post)
+    title, post = dbase.getPost(alias)
     if not title:
         abort(404)
 
@@ -133,3 +133,6 @@ def close_db(error):
 
 if __name__ == "__main__":
     app.run(debug=True)
+
+
+#  добавить обработку ошибки 404
