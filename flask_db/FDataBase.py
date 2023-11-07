@@ -57,3 +57,41 @@ class FDataBase:
             print(f"Error retrieving article from DataBase " + str(e))
 
         return []
+    
+
+    def addFeedback(self, username, email, message):
+        try:
+            tm = math.floor(time.time())
+            self.__cur.execute("INSERT INTO feedbacks VALUES(NULL, ?, ?, ?)", \
+                               (username, email, message, tm))
+            self.__db.commit()
+        except sqlite3.Error as e:
+            print("Error adding feedback to DataBase " + str(e))
+            return False
+        
+        return True
+
+
+    def getFeedback(self, feedbackId):
+        try:
+            self.__cur.execute(f"SELECT username, email, message, tm FROM feedbacks WHERE id = {feedbackId} LIMIT 1")
+            res = self.__cur.fetchone()
+            if res:
+                return res
+        except sqlite3.Error as e:
+            print("Error retrieving faadbacks from DataBase " + str(e))
+
+        return (False, False, False, False)
+
+    
+    def getFeedbacksAnonce(self):
+        try:
+            self.__cur.execute(f"SELECT id, username, email, message FROM feedbacks ORDER BY time DESC")
+            res = self.__cur.fetchall()
+            if res:
+                print(res)
+                return res
+        except sqlite3.Error as e:
+            print(f"Error retrieving feedbacks from DataBase " + str(e))
+
+        return []

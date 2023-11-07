@@ -24,6 +24,7 @@ Python-программой, выполняюейся на стороне сер
 ```bash
     (az_env)$ pip install Flask
     (az_env)$ pip install 'python-decouple==3.8'
+    (az_env)$ pip install python-dotenv
 # only for development purpose
     (az_env)$ pip install findpydeps
     (az_env)$ findpydeps -i path/to/folder > dependencies.txt

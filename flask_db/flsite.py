@@ -14,11 +14,6 @@ app = Flask(__name__)
 app.config.from_object(__name__)
 app.config.update(dict(DATABASE=os.path.join(app.root_path, 'flsite.db')))
 
-menu = [{"title": "Main", "url": "/"},
-        {"title": "Add post", "url": "add_post"},
-        {"title": "About", "url": "about"},
-        {"title": "Feedback", "url": "feedback"},
-        {"title": "Login", "url": "login"}]
 
 def connect_db():
     """Establishing a connection to the database."""
@@ -49,7 +44,7 @@ def get_db():
 def index():
     db = get_db()
     dbase = FDataBase(db)
-    return render_template('index.html', menu=menu, posts=dbase.getPostsAnonce())
+    return render_template('index.html', menu=dbase.getMenu(), posts=dbase.getPostsAnonce())
 
 
 @app.route('/add_post', methods=['POST', 'GET'])
@@ -85,20 +80,35 @@ def show_post(id_post):
 
 @app.route('/about')
 def about():
-    return render_template('about.html', title='The About Page', menu=menu)
+    db = get_db()
+    dbase = FDataBase(db)
+    return render_template('about.html', title='The About Page')
 
 
-@app.route('/feedback', methods=['POST', 'GET'])
-def feedback():
+@app.route('/add_feedback', methods=['POST', 'GET'])
+def add_feedback():
+    db = get_db()
+    dbase = FDataBase(db)
+
     if request.method == 'POST':
-        print(request.form)
-        print(f"Message: {request.form['message']}")
         if len(request.form['username']) > 2:
-            flash('-= Message sent =-', category='success')
+            res = dbase.addFeedback(request.form['username'], request.form['email'], request.form['message'])
+            if not res:
+                flash('Error adding feedback', category='error')
+            else:
+                flash('Feedback added successfully', category='success')
         else:
-            flash('-= Sending error =-', category='error')
-        
-    return render_template('feedback.html', title='Feedback', menu=menu)
+            flash('Error adding feedback', category='error')
+
+    return  render_template('add_feedback.html', menu=dbase.getMenu(), \
+            title='Adding feedback')
+
+
+@app.route('/feedbacks')
+def feedbacks():
+    db = get_db()
+    dbase = FDataBase(db)
+    return render_template('feedbacks.html', menu=dbase.getMenu(), feedbacks=dbase.getFeedbacksAnonce())
 
 
 @app.route('/login', methods=['POST', 'GET'])
@@ -111,7 +121,7 @@ def login():
         session['userLogged'] = request.form['username']
         return redirect(url_for('profile', username=session['userLogged']))
 
-    return render_template('login.html', title='Authorization', menu=menu)
+    return render_template('login.html', title='Authorization')
 
 
 @app.teardown_appcontext
@@ -123,5 +133,3 @@ def close_db(error):
 
 if __name__ == "__main__":
     app.run(debug=True)
-
-# не работает ссылка Feedback, следует создать соответствующую таблицу в базе данных по типу "добавить статью"

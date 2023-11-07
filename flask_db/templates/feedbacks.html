@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{{ super() }}
+<hr>
+<h3><p>List of feedbacks</p></h3>
+<ul class="list-posts">
+    {% for p in feedbacks %}
+    <li>
+        <p class="title">
+            <a href="{{ url_for('feedbacks', id_feedback=p.id) }}">
+                {{ p.id }}
+            </a>
+        </p>
+        <p class="annonce">
+            {{ p.message[:50] }}
+        </p>
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}
