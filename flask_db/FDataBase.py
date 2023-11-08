@@ -31,6 +31,9 @@ class FDataBase:
             if res['count'] > 0:
                 print("The article with this URL already exists.")
                 return False
+            
+            base = url_for('static', filename='pic')
+            text = re.sub(r"(?P<tag><img\s+[^>]*src=)(?P<quote>[\"'])(?P<url>.+?)(?P=quote)>", "\\g<tag>" + base + "/\\g<url>>" + ".files", text)
 
             tm = math.floor(time.time())
             self.__cur.execute("INSERT INTO posts VALUES(NULL, ?, ?, ?, ?)", \
@@ -48,10 +51,13 @@ class FDataBase:
             self.__cur.execute(f"SELECT title, text FROM posts WHERE url LIKE '{alias}' LIMIT 1")
             res = self.__cur.fetchone()
             if res:
-                base = url_for('static', filename='pic')
-                text = re.sub(r"(?P<tag><img\s+[^>]*src=)(?P<quote>[\"'])(?P<url>.+?)(?P=quote)>", "\\g<tag>" + base + "/\\g<url>>" + ".files", res['text'])
+                # Это непродуктивно с точки зрения производитльности
+                # Перенесено в метод addPost выше
+                # base = url_for('static', filename='pic')
+                # text = re.sub(r"(?P<tag><img\s+[^>]*src=)(?P<quote>[\"'])(?P<url>.+?)(?P=quote)>", "\\g<tag>" + base + "/\\g<url>>" + ".files", res['text'])
+                # return (res['title'], text)
 
-                return (res['title'], text)
+                return res
         except sqlite3.Error as e:
             print("Error retrieving article from DataBase " + str(e))
 
