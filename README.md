@@ -24,6 +24,7 @@ Python-программой, выполняюейся на стороне сер
 ```bash
     (az_env)$ pip install Flask
     (az_env)$ pip install 'python-decouple==3.8'
+# OR
     (az_env)$ pip install python-dotenv
 # only for development purpose
     (az_env)$ pip install findpydeps
@@ -32,7 +33,7 @@ Python-программой, выполняюейся на стороне сер
 ```
 OR
 ```bash
-    (az_env)$ pip install -r requirements.txt
+    (az_env)$ pip install -r dependencies.txt
 ```
 
 [4] - Запуск первого приложения

@@ -126,6 +126,11 @@ def login():
     return render_template('login.html', title='Authorization', menu=dbase.getMenu())
 
 
+@app.errorhandler(404)
+def page_not_found(error):
+    return  render_template('page404.html', title='Page not found'), 404
+
+
 @app.teardown_appcontext
 def close_db(error):
     """Closes connection with a DBMS if it has been established."""
@@ -135,7 +140,3 @@ def close_db(error):
 
 if __name__ == "__main__":
     app.run(debug=True)
-
-
-#  добавить обработку ошибки 404
-# Flask _10> timecode 17:30
