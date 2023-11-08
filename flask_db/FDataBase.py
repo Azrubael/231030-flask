@@ -1,6 +1,8 @@
 import math
 import sqlite3
 import time
+import re
+from flask import url_for
 
 
 class FDataBase:
@@ -24,7 +26,7 @@ class FDataBase:
 
     def addPost(self, title, text, url):
         try:
-            self.__cur.execute( f"SELECT COUNT() as 'count' FROM posts WHERE url LIKE '{url}'" )
+            self.__cur.execute( f"SELECT COUNT() as `count` FROM posts WHERE url LIKE '{url}'" )
             res = self.__cur.fetchone()
             if res['count'] > 0:
                 print("The article with this URL already exists.")
@@ -46,7 +48,10 @@ class FDataBase:
             self.__cur.execute(f"SELECT title, text FROM posts WHERE url LIKE '{alias}' LIMIT 1")
             res = self.__cur.fetchone()
             if res:
-                return res
+                base = url_for('static', filename='pic')
+                text = re.sub(r"(?P<tag><img\s+[^>]*src=)(?P<quote>[\"'])(?P<url>.+?)(?P=quote)>", "\\g<tag>" + base + "/\\g<url>>" + ".files", res['text'])
+
+                return (res['title'], text)
         except sqlite3.Error as e:
             print("Error retrieving article from DataBase " + str(e))
 

@@ -82,7 +82,7 @@ def show_post(alias):
 def about():
     db = get_db()
     dbase = FDataBase(db)
-    return render_template('about.html', title='The About Page')
+    return render_template('about.html', title='The About Page', menu=dbase.getMenu())
 
 
 @app.route('/add_feedback', methods=['POST', 'GET'])
@@ -113,6 +113,8 @@ def feedbacks():
 
 @app.route('/login', methods=['POST', 'GET'])
 def login():
+    db = get_db()
+    dbase = FDataBase(db)
     if 'userLogged' in session:
         return redirect(url_for('profile', username=session['userLogged']))
     elif request.method == 'POST' and \
@@ -121,7 +123,7 @@ def login():
         session['userLogged'] = request.form['username']
         return redirect(url_for('profile', username=session['userLogged']))
 
-    return render_template('login.html', title='Authorization')
+    return render_template('login.html', title='Authorization', menu=dbase.getMenu())
 
 
 @app.teardown_appcontext
@@ -136,3 +138,4 @@ if __name__ == "__main__":
 
 
 #  добавить обработку ошибки 404
+# Flask _10> timecode 17:30

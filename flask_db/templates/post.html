@@ -2,5 +2,6 @@
 
 {% block content %}
 {{ super() }}
-<p>{{ post }}</p>
+<!-- With html handling! -->
+<p>{{ post | safe }}</p>
 {% endblock %}

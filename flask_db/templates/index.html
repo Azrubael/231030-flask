@@ -13,7 +13,8 @@
             </a>
         </p>
         <p class="annonce">
-            {{ p.text[:50] }}
+            <!-- With hiding tags! -->
+            {{ p.text[:50] | striptags }}
         </p>
     </li>
     {% endfor %}

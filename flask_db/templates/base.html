@@ -14,12 +14,15 @@
     {% block content -%}
         {%- block mainmenu -%}
         <ul class="mainmenu">
-                <li><a href="{{ url_for('index') }}">Main</a></li>
+                <!-- <li><a href="{{ url_for('index') }}">Main</a></li>
                 <li><a href="{{ url_for('add_post') }}">Add post</a></li>
                 <li><a href="{{ url_for('add_feedback') }}">Add feedback</a></li>
                 <li><a href="{{ url_for('feedbacks') }}">Feedbacks Log</a></li>
                 <li><a href="{{ url_for('about') }}">About</a></li>
-                <li><a href="{{ url_for('login') }}">Login</a></li>
+                <li><a href="{{ url_for('login') }}">Login</a></li> -->
+                {% for p in menu %}
+                    <li><a href="{{ p.url }}">{{ p.title }}</a></li>
+                {% endfor %}
         </ul>
         {% endblock mainmenu -%}
         <div class="clear"></div>
