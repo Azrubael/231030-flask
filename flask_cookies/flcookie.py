@@ -4,6 +4,7 @@ app = Flask(__name__)
 
 menu = [{"name": "Main", "url": "/"},
         {"name": "Add post", "url": "/add_post"},
+        {"name": "Img", "url": "/show_img"},
         {"name": "About", "url": "/about"}]
 
 
@@ -22,11 +23,26 @@ def about():
     return res
 
 
+@app.route('/show_img')
+def show_img():
+    img = None
+    with app.open_resource( app.root_path + "/static/pic/a11vo.jpg", \
+                           mode="rb") as f:
+        img = f.read()
+    if img is None:
+        return "None image"
+    res = make_response(img)
+    res.headers["Content-Type"] = "image/jpg"
+    res.headers["Server"] = "flasksite"
+    return res
+
+
 @app.errorhandler(404)
 def page_not_found(error):
-    return  render_template('page404.html', \
-            title='Page not found', menu=menu), 404
+    return make_response("<h3>Server error</h3>", 500)
 
 
 if __name__ == "__main__":
     app.run(debug=True)
+
+# Flask_11_ timecode [06:30]

@@ -1,6 +1,7 @@
 WSGI = Web Server Gateway Interfase, стандарт взаимодействия между
 Python-программой, выполняюейся на стороне сервера, и самим Web-сервером.
 
+
 [1] - Установка Python 3.10 или более позднего
 # https://docs.python.org/3/using/windows.html#launcher
 Установка pip (если нужно)
@@ -23,18 +24,16 @@ Python-программой, выполняюейся на стороне сер
 [3] - Установка фреймворка Flask и модуля для работы с кастодиальными переменными окружения
 ```bash
     (az_env)$ pip install Flask
-    (az_env)$ pip install 'python-decouple==3.8'
-# OR
     (az_env)$ pip install python-dotenv
-# only for development purpose
-    (az_env)$ pip install findpydeps
-    (az_env)$ findpydeps -i path/to/folder > dependencies.txt
+# OR
+    (az_env)$ pip install 'python-decouple==3.8'
     
 ```
 OR
 ```bash
     (az_env)$ pip install -r dependencies.txt
 ```
+
 
 [4] - Запуск первого приложения
 * При работе в Linux
@@ -46,7 +45,18 @@ OR
     (az_env)$ py flask_wsgi_w/flask_wsgi*.py
 ```
 
-[5] - Деактивация изолированой среды
+
+[5] - Создание перечня зависимостей
+############ только для разработки ############
+```bash
+    (az_env)$ pip freeze > dependencies.txt
+# OR
+    (az_env)$ pip install findpydeps
+    (az_env)$ findpydeps -i path/to/folder > dependencies.txt
+```
+
+
+[6] - Деактивация изолированой среды
 ```bash
     (az_env)$ deactivate
 ```
