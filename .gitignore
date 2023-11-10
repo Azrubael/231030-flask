@@ -2,5 +2,6 @@
 *.env.*
 **/__pycache__
 **/az_env
-**/*.files/*
+**/azwenv
+**/*.files
 db.sqite3

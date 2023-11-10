@@ -16,8 +16,8 @@ Python-программой, выполняюейся на стороне сер
 ```
 * При работе в Windows
 ```bash
-    $ py -m venv az_env
-    $ .\az_env\Scripts\activate
+    $ py -m venv azwenv
+    $ .\azwenv\Scripts\activate
 ```
 
 
