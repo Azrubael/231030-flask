@@ -5,16 +5,17 @@
 {% for cat, msg in get_flashed_messages(True) %}
     <div class="flash {{ cat }}">{{ msg }}</div>
 {% endfor %}
-<form action="/login" method="post" class="form-contact">
-    <p><label>Email: </label>
+<form action="/register" method="post" class="form-contact">
+    <p><label>Name: </label>
         <input type="text" name="username" value="" requied />
+    <p><label>Email: </label>
+        <input type="text" name="email" value="" requied />
     <p><label>Password: </label>
         <input type="password" name="psw" value="" requied />
+    <p><label>Repeat password: </label>
+        <input type="password" name="psw2" value="" requied />
     <p id="loginsubmit">
-        <input type="submit" value="Log In" />
-        <sub><input type="checkbox" name="remainme" />Remember me</sub>
+        <input type="submit" value="Register" />
     </p>
-    <hr align=left width="300px">
-    <p><a href="{{ url_for('register') }}">Register</a></p>
 </form>
 {% endblock %}

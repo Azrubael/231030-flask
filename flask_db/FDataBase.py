@@ -51,12 +51,6 @@ class FDataBase:
             self.__cur.execute(f"SELECT title, text FROM posts WHERE url LIKE '{alias}' LIMIT 1")
             res = self.__cur.fetchone()
             if res:
-                # Это непродуктивно с точки зрения производитльности
-                # Перенесено в метод addPost выше
-                # base = url_for('static', filename='pic')
-                # text = re.sub(r"(?P<tag><img\s+[^>]*src=)(?P<quote>[\"'])(?P<url>.+?)(?P=quote)>", "\\g<tag>" + base + "/\\g<url>>" + ".files", res['text'])
-                # return (res['title'], text)
-
                 return res
         except sqlite3.Error as e:
             print("Error retrieving article from DataBase " + str(e))
@@ -79,8 +73,7 @@ class FDataBase:
     def addFeedback(self, username, email, message):
         try:
             tm = math.floor(time.time())
-            self.__cur.execute("INSERT INTO feedbacks VALUES(NULL, ?, ?, ?)", \
-                               (username, email, message, tm))
+            self.__cur.execute("INSERT INTO feedbacks VALUES(NULL, ?, ?, ?, ?)", (username, email, message, tm))
             self.__db.commit()
         except sqlite3.Error as e:
             print("Error adding feedback to DataBase " + str(e))
@@ -112,3 +105,22 @@ class FDataBase:
             print(f"Error retrieving feedbacks from DataBase " + str(e))
 
         return []
+    
+
+    def addUser(self, username, email, hpsw):
+        try:
+            self.__cur.execute(f"SELECT COUNT() as `count` from users WHERE email like '{email}'")
+            res = self.__cur.fetchone()
+            if res['count'] > 0:
+                print("A user with this email already exists")
+                return False
+            
+            tm = math.floor(time.time())
+            self.__cur.execute("INSERT INTO users VALUES(NULL, ?, ?, ?, ?)", \
+                            (username, email, hpsw, tm))
+            self.__db.commit()
+        except sqlite3.Error as e:
+            print("Error when adding a user to the DataBase" + str(e))
+            return False
+
+        return True
