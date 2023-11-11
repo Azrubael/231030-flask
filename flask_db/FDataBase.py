@@ -114,7 +114,7 @@ class FDataBase:
             if res['count'] > 0:
                 print("A user with this email already exists")
                 return False
-            
+    
             tm = math.floor(time.time())
             self.__cur.execute("INSERT INTO users VALUES(NULL, ?, ?, ?, ?)", \
                             (username, email, hpsw, tm))
@@ -124,3 +124,35 @@ class FDataBase:
             return False
 
         return True
+    
+
+    def getUser(self, user_id):
+        try:
+            self.__cur.execute(f"SELECT * FROM users WHERE id = {user_id} LIMIT 1")
+            res = self.__cur.fetchone()
+            if not res:
+                print("User not found")
+                return False
+    
+            return res
+        except sqlite3.Error as e:
+            print("Error when getting a user from the DataBase" + str(e))
+        
+        return False
+    
+
+    def getUserByEmail(self, email):
+        try:
+            self.__cur.execute(f"SELECT * FROM users WHERE email = '{email}' LIMIT 1")
+            res = self.__cur.fetchone()
+            if not res:
+                print("User not found")
+                return False
+            
+            return res
+        except sqlite3.Error as e:
+            print("Error when getting userdata from the DataBase" + str(e))
+
+        return False
+            
+
